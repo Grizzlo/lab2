@@ -45,25 +45,29 @@ public class control {
             }
         }
     }
-
-    public void run() {
-        while (true) {
-            synchronized (monitor) {
-                if (!queue1.isEmpty()) {
-                    if (!cpu1.isBusy()) {
-                        cpu1.loadProcess(queue1.pop());
+    private class TakeFromQueue implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                synchronized (monitor) {
+                    if (!queue1.isEmpty()) {
+                        if (!cpu1.isBusy()) {
+                            cpu1.loadProcess(queue1.pop());
+                        }
                     }
                 }
-            }
-            synchronized (monitor) {
-                if (!queue2.isEmpty()) {
-                    if (!cpu2.isBusy()) {
-                        cpu2.loadProcess(queue2.pop());
+                synchronized (monitor) {
+                    if (!queue2.isEmpty()) {
+                        if (!cpu2.isBusy()) {
+                            cpu2.loadProcess(queue2.pop());
+                        }
                     }
                 }
             }
         }
+
     }
+
 }
     class  main {
         public static void main(String args[]) {
